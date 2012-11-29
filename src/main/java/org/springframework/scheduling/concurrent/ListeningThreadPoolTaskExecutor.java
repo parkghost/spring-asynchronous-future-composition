@@ -9,7 +9,7 @@ import org.springframework.core.task.TaskRejectedException;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
-public class ListeningThreadPoolTaskExecutor extends org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor {
+public class ListeningThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
 
 	@Override
 	public Future<?> submit(Runnable task) {
