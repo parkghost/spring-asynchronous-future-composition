@@ -2,7 +2,7 @@ Below code snippet combine Guava ListenableFuture and spring @Async for non-bloc
 
 ### Configuration:
 
-1. add ListeningThreadPoolTaskExecutor class to project classpath
+1. add `ListeningThreadPoolTaskExecutor` class to project classpath
 
 		package org.springframework.scheduling.concurrent;
 		
@@ -41,7 +41,7 @@ Below code snippet combine Guava ListenableFuture and spring @Async for non-bloc
 		}
 
 
-2. add taskExecutor bean defintion to xml configuration
+2. add `taskExecutor` bean defintion to xml configuration
 	
 		<bean id="taskExecutor"
 			class="org.springframework.scheduling.concurrent.ListeningThreadPoolTaskExecutor">
@@ -85,6 +85,23 @@ Below code snippet combine Guava ListenableFuture and spring @Async for non-bloc
 		
 	}
 	
+For full example, please look in the `src/main/java/me/brandon/application` directory.
+
+*the console output from example*
+
+	2012-11-29 14:26:01,045 [main] INFO  me.brandon.application.Main - starting application
+	2012-11-29 14:26:01,869 [taskExecutor-1] DEBUG me.brandon.application.SearchService - search keyword:Joshua Bloch
+	2012-11-29 14:26:01,869 [taskExecutor-3] DEBUG me.brandon.application.SearchService - search keyword:Joshua Bloch
+	2012-11-29 14:26:01,869 [taskExecutor-4] DEBUG me.brandon.application.SearchService - search keyword:Martin Odersky
+	2012-11-29 14:26:01,869 [taskExecutor-5] DEBUG me.brandon.application.SearchService - search keyword:Brian Goetz
+	2012-11-29 14:26:01,869 [taskExecutor-2] DEBUG me.brandon.application.SearchService - search keyword:Martin Fowler
+	2012-11-29 14:26:02,874 [taskExecutor-3] DEBUG me.brandon.application.SearchService - search keyword:Bruce Eckel
+	2012-11-29 14:26:03,871 [taskExecutor-5] DEBUG me.brandon.application.SearchService - search keyword:Martin Fowler
+	2012-11-29 14:26:03,871 [taskExecutor-1] DEBUG me.brandon.application.SearchApplication - search keyword:Joshua Bloch found:[Effective Java, Java Concurrency in Practice, JavaTM Puzzlers, Java Concurrency in Practice] totalTime:2002ms
+	2012-11-29 14:26:09,875 [taskExecutor-5] DEBUG me.brandon.application.SearchApplication - search keyword:Joshua BlochMartin OderskyBrian GoetzBruce Eckel found:[Thinking in C++, JavaTM Puzzlers, Thinking in Java, Programming in Scala, Effective Java, Java Concurrency in Practice] totalTime:7001ms
+	2012-11-29 14:26:10,870 [taskExecutor-2] WARN  me.brandon.application.SearchApplication - the keyword 'Martin Fowler'did not match any records
+	2012-11-29 14:26:10,871 [main] INFO  me.brandon.application.Main - leaving application
+
 	
 ### Reference:
 1.	[Google Guava ListenableFutureExplained](http://code.google.com/p/guava-libraries/wiki/ListenableFutureExplained)
