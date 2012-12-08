@@ -2,7 +2,7 @@ Below code snippet combine Guava ListenableFuture and spring @Async for non-bloc
 
 ### Configuration:
 
-1.add `ListeningThreadPoolTaskExecutor` class to project classpath
+1\. add `ListeningThreadPoolTaskExecutor` class to project classpath
 
 ```java
 package org.springframework.scheduling.concurrent;
@@ -41,7 +41,7 @@ public class ListeningThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
 	}
 }
 ```
-2.add `taskExecutor` bean defintion to xml configuration
+2\. add `taskExecutor` bean defintion to xml configuration
 	
 ```xml
 <bean id="taskExecutor"
