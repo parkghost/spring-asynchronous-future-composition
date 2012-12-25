@@ -88,7 +88,7 @@ public class SearchApplication {
 }
 ```
 
-For <a href="tree/master/src/main/java/me/brandon/application">full example</a>, please look in the `src/main/java/me/brandon/application` directory.
+For <a href="spring-asynchronous-future-composition/tree/master/src/main/java/me/brandon/application">full example</a>, please look in the `src/main/java/me/brandon/application` directory.
 
 *the console output from full example*
 
