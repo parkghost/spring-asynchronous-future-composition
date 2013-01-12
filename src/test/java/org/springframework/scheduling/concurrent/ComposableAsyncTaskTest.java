@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +31,14 @@ public class ComposableAsyncTaskTest {
 	}
 
 	@Test
-	public void testFutureCallback() {
+	public void testFutureCallback() throws InterruptedException {
 		final CountDownLatch latch = new CountDownLatch(1);
 		ListenableFuture<String> pong = (ListenableFuture<String>) service.ping();
 
+		final AtomicReference<String> deferredResult = new AtomicReference<String>();
 		FutureCallback<String> callback = new FutureCallback<String>() {
 			public void onSuccess(String result) {
-				assertThat(result, is("pong"));
+				deferredResult.set(result);
 				latch.countDown();
 			}
 
@@ -45,11 +48,9 @@ public class ComposableAsyncTaskTest {
 		};
 
 		Futures.addCallback(pong, callback);
-		try {
-			latch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
+		latch.await(2, TimeUnit.SECONDS);
+		assertThat(deferredResult.get(), is("pong"));
 
 	}
 }
