@@ -62,8 +62,8 @@ public class SearchService {
 
 	@Async
 	public Future<SearchResult> search(String keyword) {
-		...
-		return new AsyncResult<SearchResult>(…);
+		SearchResult result = ... //do some blocking or heavy operation here
+		return new AsyncResult<SearchResult>(result);
 	}
 	
 }
@@ -88,9 +88,9 @@ public class SearchApplication {
 }
 ```
 
-For full example, please look in the `src/main/java/me/brandon/application` directory.
+For <a href="https://github.com/parkghost/spring-asynchronous-future-composition/tree/master/src/main/java/me/brandon/application">full example</a>, please look in the `src/main/java/me/brandon/application` directory.
 
-*the console output from example*
+*the console output from full example*
 
 	2012-11-29 14:26:01,045 [main] INFO  me.brandon.application.Main - starting application
 	2012-11-29 14:26:01,869 [taskExecutor-1] DEBUG me.brandon.application.SearchService - search keyword:Joshua Bloch
