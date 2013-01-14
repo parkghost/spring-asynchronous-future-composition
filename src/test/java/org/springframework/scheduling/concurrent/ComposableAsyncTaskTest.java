@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,7 +32,7 @@ public class ComposableAsyncTaskTest {
 	}
 
 	@Test
-	public void testFutureCallback() throws InterruptedException {
+	public void testSuccessfulResult() throws InterruptedException {
 		final CountDownLatch latch = new CountDownLatch(1);
 		ListenableFuture<String> pong = (ListenableFuture<String>) service.ping();
 
@@ -51,6 +52,41 @@ public class ComposableAsyncTaskTest {
 
 		latch.await(2, TimeUnit.SECONDS);
 		assertThat(deferredResult.get(), is("pong"));
+
+	}
+
+	@Test
+	public void testFailureResult() throws InterruptedException {
+		final CountDownLatch latch = new CountDownLatch(1);
+		ListenableFuture<String> boom = (ListenableFuture<String>) service.bang();
+
+		final AtomicReference<String> deferredResult = new AtomicReference<String>();
+		FutureCallback<String> callback = new FutureCallback<String>() {
+			public void onSuccess(String result) {
+				// ignored
+			}
+
+			public void onFailure(Throwable t) {
+				latch.countDown();
+			}
+		};
+
+		Futures.addCallback(boom, callback);
+
+		latch.await(2, TimeUnit.SECONDS);
+		assertThat(deferredResult.get(), is(nullValue()));
+
+		Exception rootCause = null;
+		try {
+			boom.get();
+			fail("should throw the boom excpetion");
+		} catch (ExecutionException e) {
+			rootCause = (Exception) e.getCause();
+		}
+
+		assertThat(rootCause, not(nullValue()));
+		assertThat(rootCause, instanceOf(RuntimeException.class));
+		assertThat(rootCause.getMessage(), is("boom!"));
 
 	}
 }

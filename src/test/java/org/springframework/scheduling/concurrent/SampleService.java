@@ -12,4 +12,9 @@ public class SampleService {
 	public Future<String> ping() {
 		return new AsyncResult<String>("pong");
 	}
+
+	@Async
+	public Future<String> bang() {
+		throw new RuntimeException("boom!");
+	}
 }
